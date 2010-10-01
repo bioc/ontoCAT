@@ -1,0 +1,16 @@
+exportPattern("^[[:alpha:]]+")
+# begin
+#Timestamp: Thu Sep 30 11:30:08 2010
+
+#Imports: methods, rJava
+
+importClassesFrom(methods, character)
+
+importClassesFrom(rJava, jobjRef)
+
+importMethodsFrom(methods, show)
+
+importFrom(methods, new)
+
+importFrom(rJava, .jaddClassPath, .jevalArray, .jinit, .jnew)
+# end

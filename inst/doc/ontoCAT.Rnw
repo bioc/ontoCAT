@@ -1,0 +1,216 @@
+%
+% NOTE -- ONLY EDIT THE .Rnw FILE!!!  The .tex file is
+% likely to be overwritten.
+%
+%\VignetteIndexEntry{ontoCAT package}
+%\VignetteDepends{}
+%\VignetteKeywords{Classification, DataRepresentation}
+%\VignettePackage{ontoCAT}
+\documentclass[]{article}
+\usepackage{times}
+\usepackage{hyperref}
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\R}{\textsf{R}}
+\newcommand{\ontoCAT}{\Rpackage{ontoCAT}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+
+\newcommand{\term}[1]{\emph{#1}}
+    \newcommand{\mref}[2]{\htmladdnormallinkfoot{#2}{#1}}
+
+\begin{document}
+
+\title{\ontoCAT{}: package for ontology parsing}
+    \author{Misha Kapushesky, Pavel Kurnosov, \mref{mailto:natalja@ebi.ac.uk}{Natalja Kurbatova}}
+\date{20 September, 2010}
+\maketitle
+
+Version 0.0.1. released 20 September, 2010.
+
+
+\section{Introduction}
+
+
+The \ontoCAT{} package provides a simple interface to the Experimental
+Factor Ontology (\url{http://www.ebi.ac.uk/efo}) and to any other
+ontology described in OWL or OBO format.
+
+Package can load the ontology from a local file or on the fly from a URL and
+internally create the inferred ontology view. Experimental Factor Ontology (EFO)
+is the default ontology, loaded from:
+\url{http://efo.svn.sourceforge.net/viewvc/efo/trunk/src/efoinowl/InferredEFOOWLview/EFO_inferred.owl}.
+The package's methods allow to parse an ontology, search terms in it, find out
+term parents and children.
+The package is based on the Ontology Common API Tasks Java library
+(\url{http://www.ontocat.org}) as well as various other utilites methods and
+depends on \Rpackage{rJava} R package.
+
+There are two clasess in the \ontoCAT{} package:
+\begin{itemize}
+\item \Rclass{OntologyParser} for parsing and representation of the ontology hierarchy.
+\item \Rclass{OntologyTerm} for external view of an ontology term in the hierarchy.
+\end{itemize}
+
+\section{Functions}
+The \ontoCAT package provides a number of functions to work with ontologies in R.
+
+\subsection{Create Ontology Parser}
+To create an object of \Rclass{OntologyParser} you can use one of the two methods:
+\begin{itemize}
+\item \Rfunction{getEFOParser()} loads the latest EFO version on the fly from the
+EFO SVN repository and creates \Robject{OntologyParser} object.
+\item \Rfunction{getOntologyParser("pathToOntology")} loads the ontology described in
+OWL or OBO format from a local file or a UR and creates \Robject{OntologyParser} object.
+\end{itemize}
+<<R.hide, results=hide, echo=TRUE>>=
+library(ontoCAT)
+efo <- getEFOParser()
+biotop <- getOntologyParser("http://purl.org/biotop/biotop.owl#Disposition")
+@
+
+\subsection{Ontology Parsing}
+\begin{itemize}
+\item
+To find all ontology terms two functions can be used:
+\Rfunction{getAllTerms} - returns a list of \Rclass{OntologyTerm} objects. In turn,
+\Rfunction{getAllTermIds} - returns a list of term accessions.
+<<R.hide, results=hide, echo=TRUE>>=
+getAllTerms(biotop)
+getAllTermIds(efo)
+@
+\item
+Function \Rfunction{getTermById} returns the accession number of the term.
+In turn, \Rfunction{getTermNameById} returns the name of the term.
+<<R.hide, results=hide, echo=TRUE>>=
+term <- getTermById(efo,"EFO_0000322")
+term_biotop <- getTermById(biotop,"DeadBody")
+getTermNameById(efo,"EFO_0000311")
+getTermNameById(biotop,"EmbryonicStructure")
+@
+\item
+To find out all term parents or children the following functions can be used.
+<<R.hide, results=hide, echo=TRUE>>=
+getAllTermParents(efo,"EFO_0000322")
+getAllTermChildren(efo,"EFO_0000322")
+getAllTermParents(biotop,"DeadBody")
+getAllTermChildren(biotop,"DeadBody")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+To find out only direct parents or children of the term functions \Rfunction{getTermParents}
+or \Rfunction{getTermChildren} can be used.
+<<R.hide, results=hide, echo=TRUE>>=
+getTermParents(efo,"EFO_0000322")
+getTermChildren(efo,"EFO_0000322")
+getTermParents(biotop,"DeadBody")
+getTermChildren(biotop,"DeadBody")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+One more function to get term children together with the queried term accession is
+\Rfunction{getTermAndAllChildrenIds}.
+<<R.hide, results=hide, echo=TRUE>>=
+getTermAndAllChildrenIds(efo,"EFO_0000322")
+getTermAndAllChildrenIds(biotop,"DeadBody")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+To create a flat subtree representation of the ontology "opened" down to the specified
+term function \Rfunction{getTreeDownTo} can be used. All possible paths from the root
+will be returned. 
+<<R.hide, results=hide, echo=TRUE>>=
+getTreeDownTo(efo,"EFO_0000322")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+A few simple functions allow to get term definition and synonyms:
+<<R.hide, results=hide, echo=TRUE>>=
+getDefinitions(efo,"EFO_0000322")
+getSynonyms(efo,"EFO_0000322")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+A few simple functions allow to get some metadata about the used ontology:
+<<R.hide, results=hide, echo=TRUE>>=
+getOntologyAccession(efo)
+getOntologyDescription(efo)
+@
+Arguments: appropriate \Robject{OntologyParser}.
+\item
+To check if the term is present in the ontology function \Rfunction{hasTerm} can
+be used.
+<<R.hide, results=hide, echo=TRUE>>=
+hasTerm(efo,"CL000023")
+hasTerm(efo,"EFO_0000322")
+@
+Arguments: appropriate \Robject{OntologyParser} and the term accession.
+\item
+The following functions can be used to search terms in the ontology:
+<<R.hide, results=hide, echo=TRUE>>=
+searchTerm(efo,"thymus")
+searchTermPrefix(efo,"thym")
+@
+Arguments: appropriate \Robject{OntologyParser} and string\/string prefix to search for.
+\item
+The following functions can be used to investigate the ontology hierarchy:
+<<R.hide, results=hide, echo=TRUE>>=
+isRoot(efo,"EFO_0000322")
+getRoots(efo)
+getRootIds(efo)
+@
+For some ontologies these functions might fail when the ontology used was not design
+to have root classes.
+
+\end{itemize}
+
+\subsection{Functions Specific for EFO}
+There are few functions specific for EFO class hierarchy to work with EFO branch roots.
+
+<<R.hide, results=hide, echo=TRUE>>=
+getEFOBranchRootIds(efo)
+isEFOBranchRoot(efo,"EFO_0000322")
+@
+
+\subsection{Ontology Term}
+There are only three functions for the \Rclass{OntologyTerm} class.
+\begin{itemize}
+\item \Rfunction{getLabel} to get term name;
+\item \Rfunction{getAccession} to get term accession;
+\item \Rfunction{show} to view the term.
+\end{itemize}
+
+<<R.hide, results=hide, echo=TRUE>>=
+term <- getTermById(efo,"EFO_0000322")
+getLabel(term)
+getAccession(term)
+term
+@
+
+\section*{References}
+\begin{enumerate}
+\item Adamusiak T, Burdett T, van der Velde K J, Abeygunawardena N, Antonakaki D, Parkinson H and Swertz M:
+OntoCAT -- a simpler way to access ontology resources. \emph{Available from Nature Precedings}
+\url{http://dx.doi.org/10.1038/npre.2010.4666.1} (2010)
+
+\item Malone J, Holloway E, Adamusiak T, Kapushesky M, Zheng J, Kolesnikov N, Zhukova A, Brazma A, Parkinson H:
+Modeling Sample Variables with an Experimental Factor Ontology.
+\emph{Bioinformatics} 2010, \textbf{26}(8):1112--1118
+
+\item Experimental Factor Ontology \url{http://www.ebi.ac.uk/efo}
+
+\item Ontology Common API Tasks java library \url{http://www.ontocat.org}
+
+\item Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
+\end{enumerate}
+
+\end{document}
