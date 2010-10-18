@@ -1,7 +1,7 @@
 Package: ontoCAT
 Type: Package
 Title: Ontology parsing
-Version: 0.99.0
+Version: 1.0.0
 Date: 2010-09-20
 Author: Misha Kapushevsky, Pavel Kurnosov, Natalja Kurbatova
 Maintainer: Natalja Kurbatova <natalja@ebi.ac.uk>
