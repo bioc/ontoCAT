@@ -1,15 +1,15 @@
 \name{getAllTermChildren}
 \alias{getAllTermChildren}
-\title{Returns all term's children}
+\title{Returns all children of term of interest}
 \description{
-    Returns all term's children. Term in the set is represented as the instance of the \code{\linkS4class{OntologyTerm}} class
+    Returns set of all children of the term of interest. Term in the set is represented as the instance of the \code{\linkS4class{OntologyTerm}} class
 }
 \usage{
-    getAllTermChildren(object,id)
+    getAllTermChildren(object1,object2)
 }
 \arguments{
-    \item{object}{instance of the \code{\linkS4class{OntologyParser}} class}
-    \item{id}{accession string of the term of interest}
+    \item{object1}{instance of the \code{\linkS4class{Ontology}} class}
+    \item{object2}{instance of the \code{\linkS4class{OntologyTerm}} class}
 }
 \value{
     Returns set of ontology terms: each term in the set is the instance of the \code{\linkS4class{OntologyTerm}} class
@@ -25,9 +25,10 @@
     
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
-\author{Misha Kapushesky, Pavel Kurnosov, Natalja Kurbatova}
-    \seealso{\code{\linkS4class{OntologyParser}} and \code{\linkS4class{OntologyTerm}}}
+\author{Natalja Kurbatova}
+    \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-    efo <- getEFOParser()
-    getAllTermChildren(efo,"EFO_0000322")
+    efo <- getEFO()
+    term <- getTermById(efo,"EFO_0000322")	
+    getAllTermChildren(efo,term)
 }

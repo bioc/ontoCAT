@@ -4,12 +4,12 @@
     .jaddClassPath(dir(system.file("jars", package="ontoCAT"),full.names=TRUE))
 }
 
-getOntologyParser <- function(pathToURI) {
-    ontologyParser<-.jnew("uk.ac.ebi.ontocat.OntologyParser",pathToURI)
-    new("OntologyParser", op=ontologyParser)
+getOntology <- function(pathToURI) {
+    ontology<-.jnew("uk.ac.ebi.ontocat.utils.OntologyParser",pathToURI)
+    new("Ontology", op=ontology)
 }
 
-getEFOParser <- function() {
-    ontologyParser<-.jnew("uk.ac.ebi.ontocat.OntologyParser")
-    new("OntologyParser", op=ontologyParser)
+getEFO <- function() {
+    ontologyParser<-.jnew("uk.ac.ebi.ontocat.utils.OntologyParser")
+    new("Ontology", op=ontologyParser)
 }

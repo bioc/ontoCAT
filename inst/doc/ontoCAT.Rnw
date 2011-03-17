@@ -30,55 +30,55 @@
 
 \begin{document}
 
-\title{\ontoCAT{}: package for ontology parsing}
-    \author{Misha Kapushesky, Pavel Kurnosov, \mref{mailto:natalja@ebi.ac.uk}{Natalja Kurbatova}}
-\date{20 September, 2010}
+\title{\ontoCAT{}: package for basic operations with ontologies}
+    \author{\mref{mailto:natalja@ebi.ac.uk}{Natalja Kurbatova}, Tomasz Adamusiak, Pavel Kurnosov, Morris Swertz and Misha Kapushesky }
+\date{15 March, 2011}
 \maketitle
 
-Version 0.0.1. released 20 September, 2010.
+Version 1.0.1. released 15 March, 2011.
 
 
 \section{Introduction}
 
+We present \ontoCAT{} -- an R package providing a simple interface to ontologies described in two widely used formats:
+OBO (Open Biomedical Ontology format) and OWL (Web Ontology Language). Supporting these
+two formats the \ontoCAT{} package gives unified, format-independent access to ontology terms and the ontology hierarchy.
 
-The \ontoCAT{} package provides a simple interface to the Experimental
-Factor Ontology (\url{http://www.ebi.ac.uk/efo}) and to any other
-ontology described in OWL or OBO format.
+Our package's focus is on basic operations with ontologies, including searching for terms, getting a particular term's
+parents and/or children, showing paths to the term from the root element of the ontology, showing flattened-tree
+representations of the ontology hierarchy. Integration of this functionality into the \R environment allows to combine easily
+tasks concerning ontologies with other R scripts.
 
-Package can load the ontology from a local file or on the fly from a URL and
-internally create the inferred ontology view. Experimental Factor Ontology (EFO)
-is the default ontology, loaded from:
-\url{http://efo.svn.sourceforge.net/viewvc/efo/trunk/src/efoinowl/InferredEFOOWLview/EFO_inferred.owl}.
-The package's methods allow to parse an ontology, search terms in it, find out
-term parents and children.
+Light ontoCAT package version is available in Bioconductor starting from the release 2.7.
+
+Full version includes batch methods, searches in OLS and Bioportal repositories, and it is heavier in terms of size: 7.9 MB. That is why it was not included into Bioconductor where package size is limited with 2 MB.  
+
+Full version of ontoCAT package as well as Java sources, Java docs, examples and documentation are available on the ontoCAT project website  \url{http://www.ontocat.org/wiki/r}
+
 The package is based on the Ontology Common API Tasks Java library
 (\url{http://www.ontocat.org}) as well as various other utilites methods and
 depends on \Rpackage{rJava} R package.
 
-There are two clasess in the \ontoCAT{} package:
-\begin{itemize}
-\item \Rclass{OntologyParser} for parsing and representation of the ontology hierarchy.
-\item \Rclass{OntologyTerm} for external view of an ontology term in the hierarchy.
-\end{itemize}
+\section{Basic operations with ontology}
+The \ontoCAT{} package can load an ontology from a local file or on-the-fly from a URI. An inferred ontology
+view is created internally, using \textbf{Pellet} to classify the ontology. Ontologies described in OWL or OBO format are
+supported. 
 
-\section{Functions}
-The \ontoCAT package provides a number of functions to work with ontologies in R.
-
-\subsection{Create Ontology Parser}
-To create an object of \Rclass{OntologyParser} you can use one of the two methods:
+\subsection{Create Ontology object}
+To create an object of \Rclass{Ontology} you can use one of the two methods:
 \begin{itemize}
-\item \Rfunction{getEFOParser()} loads the latest EFO version on the fly from the
-EFO SVN repository and creates \Robject{OntologyParser} object.
-\item \Rfunction{getOntologyParser("pathToOntology")} loads the ontology described in
-OWL or OBO format from a local file or a UR and creates \Robject{OntologyParser} object.
+\item \Rfunction{getEFO()} loads the latest EFO version on the fly from the
+EFO SVN repository and creates \Robject{Ontology} object.
+\item \Rfunction{getOntology("pathToOntology")} loads the ontology described in
+OWL or OBO format from a local file or a UR and creates \Robject{Ontology} object.
 \end{itemize}
 <<R.hide, results=hide, echo=TRUE>>=
 library(ontoCAT)
-efo <- getEFOParser()
-biotop <- getOntologyParser("http://purl.org/biotop/biotop.owl#Disposition")
+efo <- getEFO()
+biotop <- getOntology("http://purl.org/biotop/biotop.owl")
 @
 
-\subsection{Ontology Parsing}
+\subsection{Ontology traversal and search}
 \begin{itemize}
 \item
 To find all ontology terms two functions can be used:
@@ -88,64 +88,69 @@ To find all ontology terms two functions can be used:
 getAllTerms(biotop)
 getAllTermIds(efo)
 @
+
 \item
 Function \Rfunction{getTermById} returns the accession number of the term.
 In turn, \Rfunction{getTermNameById} returns the name of the term.
 <<R.hide, results=hide, echo=TRUE>>=
-term <- getTermById(efo,"EFO_0000322")
+term_efo <- getTermById(efo,"EFO_0000322")
 term_biotop <- getTermById(biotop,"DeadBody")
 getTermNameById(efo,"EFO_0000311")
 getTermNameById(biotop,"EmbryonicStructure")
 @
+
 \item
 To find out all term parents or children the following functions can be used.
 <<R.hide, results=hide, echo=TRUE>>=
-getAllTermParents(efo,"EFO_0000322")
-getAllTermChildren(efo,"EFO_0000322")
-getAllTermParents(biotop,"DeadBody")
-getAllTermChildren(biotop,"DeadBody")
+getAllTermParentsById(efo,"EFO_0000322")
+getAllTermChildrenById(biotop,"DeadBody")
+getAllTermParents(efo,term_efo)
+getAllTermChildren(biotop,term_biotop)
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 To find out only direct parents or children of the term functions \Rfunction{getTermParents}
 or \Rfunction{getTermChildren} can be used.
 <<R.hide, results=hide, echo=TRUE>>=
-getTermParents(efo,"EFO_0000322")
-getTermChildren(efo,"EFO_0000322")
-getTermParents(biotop,"DeadBody")
-getTermChildren(biotop,"DeadBody")
+getTermParentsById(efo,"EFO_0000322")
+getTermChildrenById(efo,"EFO_0000322")
+getTermParents(efo,term_efo)
+getTermChildren(biotop,term_biotop)
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 One more function to get term children together with the queried term accession is
 \Rfunction{getTermAndAllChildrenIds}.
 <<R.hide, results=hide, echo=TRUE>>=
-getTermAndAllChildrenIds(efo,"EFO_0000322")
-getTermAndAllChildrenIds(biotop,"DeadBody")
+getTermAndAllChildren(efo,term_efo)
+getTermAndAllChildrenById(biotop,"DeadBody")
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 To create a flat subtree representation of the ontology "opened" down to the specified
-term function \Rfunction{getTreeDownTo} can be used. All possible paths from the root
-will be returned. 
+term function \Rfunction{showHierarchyDownToTerm} can be used. Hierarchy of ontology will be 
+shown down to requested term. 
 <<R.hide, results=hide, echo=TRUE>>=
-getTreeDownTo(efo,"EFO_0000322")
+showHierarchyDownToTermById(efo,"EFO_0000322")
+showHierarchyDownToTerm(efo,term_efo)
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 A few simple functions allow to get term definition and synonyms:
 <<R.hide, results=hide, echo=TRUE>>=
-getDefinitions(efo,"EFO_0000322")
-getSynonyms(efo,"EFO_0000322")
+getTermDefinitionsById(efo,"EFO_0000322")
+getTermSynonymsById(efo,"EFO_0000322")
+getTermDefinitions(efo,term_efo)
+getTermSynonyms(efo,term_efo)
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 A few simple functions allow to get some metadata about the used ontology:
 <<R.hide, results=hide, echo=TRUE>>=
 getOntologyAccession(efo)
 getOntologyDescription(efo)
 @
-Arguments: appropriate \Robject{OntologyParser}.
+Arguments: appropriate \Robject{Ontology}.
 \item
 To check if the term is present in the ontology function \Rfunction{hasTerm} can
 be used.
@@ -153,18 +158,19 @@ be used.
 hasTerm(efo,"CL000023")
 hasTerm(efo,"EFO_0000322")
 @
-Arguments: appropriate \Robject{OntologyParser} and the term accession.
+Arguments: appropriate \Robject{Ontology} and the term accession.
 \item
 The following functions can be used to search terms in the ontology:
 <<R.hide, results=hide, echo=TRUE>>=
 searchTerm(efo,"thymus")
 searchTermPrefix(efo,"thym")
 @
-Arguments: appropriate \Robject{OntologyParser} and string\/string prefix to search for.
+Arguments: appropriate \Robject{Ontology} and string\/string prefix to search for.
 \item
 The following functions can be used to investigate the ontology hierarchy:
 <<R.hide, results=hide, echo=TRUE>>=
-isRoot(efo,"EFO_0000322")
+isRootById(efo,"EFO_0000322")
+isRoot(efo,term_efo)
 getRoots(efo)
 getRootIds(efo)
 @
@@ -173,15 +179,46 @@ to have root classes.
 
 \end{itemize}
 
-\subsection{Functions Specific for EFO}
+\subsection{Relations}
+The \ontoCAT{} package uses HermiT reasoner (considered the reference reasoner implementation for OWL API) and it is possible to compute relationship across any axis in a given ontology, e.g. has\_part, derives\_from. Behind the scenes it uses the reasoner to query the ontology for children of inverse(ObjectProperty) some ClassInQuestion. While this is not exhaustive and effectively focuses on quantifier restrictions ignoring universal restrictions (allValuesFrom) over existential restrictions (someValuesFrom) it covers the majority of restrictions used in practice and computes the relationships in reasonable time.
+
+\begin{itemize}
+\item
+To list all supported relations in ontology the following function can be used:
+<<R.hide, results=hide, echo=TRUE>>=
+getOntologyRelationNames(efo)
+@
+
+\item
+To list relations that has particular term the following function can be used:
+<<R.hide, results=hide, echo=TRUE>>=
+getTermRelationNamesById(efo,"EFO_0000322")
+getTermRelationNames(efo,term_efo)
+@
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\item
+Please use the following functions to find out terms that are in some relation with the term of interest:
+<<R.hide, results=hide, echo=TRUE>>=
+getTermRelationsById(efo,"EFO_0000322","has_part")
+getTermRelations(efo,term_efo,"has_part")
+@
+Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object, relation name.
+
+\end{itemize}
+
+\subsection{Functions specific for EFO ontology}
 There are few functions specific for EFO class hierarchy to work with EFO branch roots.
 
 <<R.hide, results=hide, echo=TRUE>>=
 getEFOBranchRootIds(efo)
-isEFOBranchRoot(efo,"EFO_0000322")
+isEFOBranchRootById(efo,"EFO_0000322")
+isEFOBranchRoot(efo,term_efo)
 @
 
-\subsection{Ontology Term}
+
+
+\subsection{Ontology term object}
 There are only three functions for the \Rclass{OntologyTerm} class.
 \begin{itemize}
 \item \Rfunction{getLabel} to get term name;
@@ -209,6 +246,8 @@ Modeling Sample Variables with an Experimental Factor Ontology.
 \item Experimental Factor Ontology \url{http://www.ebi.ac.uk/efo}
 
 \item Ontology Common API Tasks java library \url{http://www.ontocat.org}
+
+\item OntoCAT website \url{http://www.ontocat.org/wiki/r}
 
 \item Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 \end{enumerate}

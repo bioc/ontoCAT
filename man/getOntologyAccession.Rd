@@ -8,7 +8,7 @@
     getOntologyAccession(object)
 }
 \arguments{
-    \item{object}{instance of the \code{\linkS4class{OntologyParser}} class}
+    \item{object}{instance of the \code{\linkS4class{Ontology}} class}
 }
 \value{
     Returns ontology accession string.
@@ -24,9 +24,9 @@
     
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
-\author{Misha Kapushesky, Pavel Kurnosov, Natalja Kurbatova}
-    \seealso{\code{\linkS4class{OntologyParser}} and \code{\linkS4class{OntologyTerm}}}
+\author{Natalja Kurbatova}
+    \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-    efo <- getEFOParser()
+    efo <- getEFO()
     getOntologyAccession(efo)
 }

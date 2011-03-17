@@ -32,9 +32,7 @@ LazyLoad: \tab yes\cr
 
 }
 \author{
-    Misha Kapushevsky, Pavel Kurnosov, Natalja Kurbatova 
-
-    Maintainer: Natalja Kurbatova <natalja@ebi.ac.uk>
+    Natalja Kurbatova <natalja@ebi.ac.uk>
 }
 \references{
     Adamusiak T, Burdett T, van der Velde K J, Abeygunawardena N, Antonakaki D, Parkinson H and Swertz M: OntoCAT -- a simpler way to access ontology resources. \emph{Available from Nature Precedings} \url{http://dx.doi.org/10.1038/npre.2010.4666.1} (2010)  
@@ -50,9 +48,9 @@ LazyLoad: \tab yes\cr
 
 \keyword{ package }
 
-\seealso{\code{\linkS4class{OntologyParser}}, \code{\linkS4class{OntologyTerm}}, \code{\link{getOntologyParser}} and \code{\link{getEFOParser}} }
+\seealso{\code{\linkS4class{Ontology}}, \code{\linkS4class{OntologyTerm}}, \code{\link{getOntology}} and \code{\link{getEFO}} }
 
 \examples{
-    efo<-getEFOParser()
-    ontologyParser <- getOntologyParser("./ontoCAR/extdata/cell.obo")
+    efo<-getEFO()
+    ontology <- getOntology("./ontoCAR/extdata/cell.obo")
 }

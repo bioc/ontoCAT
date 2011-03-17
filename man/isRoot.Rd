@@ -5,11 +5,11 @@
     Returns true if term is the root in the ontology hierarchy
 }
 \usage{
-    isRoot(object,id)
+    isRoot(object1,object2)
 }
 \arguments{
-    \item{object}{instance of the \code{\linkS4class{OntologyParser}} class}
-    \item{id}{accession string of the term of interest}
+    \item{object1}{instance of the \code{\linkS4class{Ontology}} class}
+    \item{object2}{instance of the \code{\linkS4class{OntologyTerm}} class}
 }
 \value{
     Returns true or false
@@ -25,9 +25,10 @@
     
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
-\author{Misha Kapushesky, Pavel Kurnosov, Natalja Kurbatova}
-    \seealso{\code{\linkS4class{OntologyParser}} and \code{\linkS4class{OntologyTerm}}}
+\author{Natalja Kurbatova}
+    \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-    efo <- getEFOParser()
-    isRoot(efo,"EFO_0000322")
+    efo <- getEFO()
+    term <- getTermById(efo,"EFO_0000322")
+    isRoot(efo,term)
 }

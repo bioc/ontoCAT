@@ -33,15 +33,15 @@
     
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
-\author{ Tomasz Adamusiak }
+\author{Tomasz Adamusiak}
 
 \seealso{
-    \code{\linkS4class{OntologyParser}}
+    \code{\linkS4class{Ontology}}
 }
 
 \examples{
-    ontologyParser <- getEFOParser()
-    term <- getTermById(ontologyParser,"EFO_0001221")
+    ontology <- getEFO()
+    term <- getTermById(ontology,"EFO_0001221")
     show(term)
     getAccession(term)
     getLabel(term)

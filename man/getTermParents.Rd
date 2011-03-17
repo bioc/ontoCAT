@@ -5,11 +5,11 @@
     Returns set of direct parents of the term of interest. Term in the set is represented as the instance of the \code{\linkS4class{OntologyTerm}} class
 }
 \usage{
-    getTermParents(object,id)
+    getTermParents(object1,object2)
 }
 \arguments{
-    \item{object}{instance of the \code{\linkS4class{OntologyParser}} class}
-    \item{id}{accession string of the term of interest}
+    \item{object1}{instance of the \code{\linkS4class{Ontology}} class}
+    \item{object2}{instance of the \code{\linkS4class{OntologyTerm}} class}
 }
 \value{
     Returns set of ontology terms: each term in the set is the instance of the \code{\linkS4class{OntologyTerm}} class
@@ -25,9 +25,10 @@
     
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
-\author{Misha Kapushesky, Pavel Kurnosov, Natalja Kurbatova}
-    \seealso{\code{\linkS4class{OntologyParser}} and \code{\linkS4class{OntologyTerm}}}
+\author{Natalja Kurbatova}
+    \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-    efo <- getEFOParser()
-    getTermParents(efo,"EFO_0000827")
+    efo <- getEFO()
+    term <- getTermById(efo,"EFO_0000827")
+    getTermParents(efo,term)
 }
