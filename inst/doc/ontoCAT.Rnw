@@ -60,9 +60,9 @@ The package is based on the Ontology Common API Tasks Java library
 depends on \Rpackage{rJava} R package.
 
 \section{Basic operations with ontology}
+Ontologies described in OWL or OBO format are supported. 
 The \ontoCAT{} package can load an ontology from a local file or on-the-fly from a URI. An inferred ontology
-view is created internally, using \textbf{Pellet} to classify the ontology. Ontologies described in OWL or OBO format are
-supported. 
+view is created internally for OWL ontologies, using \textbf{HermiT} reasoner. 
 
 \subsection{Create Ontology object}
 To create an object of \Rclass{Ontology} you can use one of the two methods:
@@ -72,11 +72,12 @@ EFO SVN repository and creates \Robject{Ontology} object.
 \item \Rfunction{getOntology("pathToOntology")} loads the ontology described in
 OWL or OBO format from a local file or a UR and creates \Robject{Ontology} object.
 \end{itemize}
-<<R.hide, results=hide, echo=TRUE>>=
-library(ontoCAT)
-efo <- getEFO()
-biotop <- getOntology("http://purl.org/biotop/biotop.owl")
-@
+
+\textit{
+   \\$>$   library(ontoCAT)
+   \\$>$   efo $\leftarrow$ getEFO()
+   \\$>$   biotop $\leftarrow$ getOntology("http://purl.org/biotop/biotop.owl")
+}
 
 \subsection{Ontology traversal and search}
 \begin{itemize}
@@ -84,139 +85,152 @@ biotop <- getOntology("http://purl.org/biotop/biotop.owl")
 To find all ontology terms two functions can be used:
 \Rfunction{getAllTerms} - returns a list of \Rclass{OntologyTerm} objects. In turn,
 \Rfunction{getAllTermIds} - returns a list of term accessions.
-<<R.hide, results=hide, echo=TRUE>>=
-getAllTerms(biotop)
-getAllTermIds(efo)
-@
+
+\textit{
+   \\$>$   getAllTerms(biotop)
+   \\$>$   getAllTermIds(efo)
+}
+
 
 \item
 Function \Rfunction{getTermById} returns the accession number of the term.
 In turn, \Rfunction{getTermNameById} returns the name of the term.
-<<R.hide, results=hide, echo=TRUE>>=
-term_efo <- getTermById(efo,"EFO_0000322")
-term_biotop <- getTermById(biotop,"DeadBody")
-getTermNameById(efo,"EFO_0000311")
-getTermNameById(biotop,"EmbryonicStructure")
-@
+
+\textit{
+   \\$>$   term\_efo $\leftarrow$ getTermById(efo,"EFO\_0000322")
+   \\$>$   term\_biotop $\leftarrow$ getTermById(biotop,"DeadBody")
+   \\$>$   getTermNameById(efo,"EFO\_0000311")
+   \\$>$   getTermNameById(biotop,"EmbryonicStructure")
+}
 
 \item
+In the \ontoCAT{} package parents and children are defined in the same way as in OLS or BioPortal. There is "isa" relationships between child and its parent. No distinction is made between universals and particulars as they are both treated as ontology terms. 
+
 To find out all term parents or children the following functions can be used.
-<<R.hide, results=hide, echo=TRUE>>=
-getAllTermParentsById(efo,"EFO_0000322")
-getAllTermChildrenById(biotop,"DeadBody")
-getAllTermParents(efo,term_efo)
-getAllTermChildren(biotop,term_biotop)
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   getAllTermParentsById(efo,"EFO\_0000322")
+   \\$>$   getAllTermChildrenById(biotop,"DeadBody")
+   \\$>$   getAllTermParents(efo,term\_efo)
+   \\$>$   getAllTermChildren(biotop,term\_biotop)
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 To find out only direct parents or children of the term functions \Rfunction{getTermParents}
 or \Rfunction{getTermChildren} can be used.
-<<R.hide, results=hide, echo=TRUE>>=
-getTermParentsById(efo,"EFO_0000322")
-getTermChildrenById(efo,"EFO_0000322")
-getTermParents(efo,term_efo)
-getTermChildren(biotop,term_biotop)
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   getTermParentsById(efo,"EFO\_0000322")
+   \\$>$   getTermChildrenById(efo,"EFO\_0000322")
+   \\$>$   getTermParents(efo,term\_efo)
+   \\$>$   getTermChildren(biotop,term\_biotop)
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 One more function to get term children together with the queried term accession is
 \Rfunction{getTermAndAllChildrenIds}.
-<<R.hide, results=hide, echo=TRUE>>=
-getTermAndAllChildren(efo,term_efo)
-getTermAndAllChildrenById(biotop,"DeadBody")
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   getTermAndAllChildren(efo,term\_efo)
+   \\$>$   getTermAndAllChildrenById(biotop,"DeadBody")
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 To create a flat subtree representation of the ontology "opened" down to the specified
 term function \Rfunction{showHierarchyDownToTerm} can be used. Hierarchy of ontology will be 
 shown down to requested term. 
-<<R.hide, results=hide, echo=TRUE>>=
-showHierarchyDownToTermById(efo,"EFO_0000322")
-showHierarchyDownToTerm(efo,term_efo)
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   showHierarchyDownToTermById(efo,"EFO\_0000322")
+   \\$>$   showHierarchyDownToTerm(efo,term\_efo)
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 A few simple functions allow to get term definition and synonyms:
-<<R.hide, results=hide, echo=TRUE>>=
-getTermDefinitionsById(efo,"EFO_0000322")
-getTermSynonymsById(efo,"EFO_0000322")
-getTermDefinitions(efo,term_efo)
-getTermSynonyms(efo,term_efo)
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   getTermDefinitionsById(efo,"EFO\_0000322")
+   \\$>$   getTermSynonymsById(efo,"EFO\_0000322")
+   \\$>$   getTermDefinitions(efo,term\_efo)
+   \\$>$   getTermSynonyms(efo,term\_efo)
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 \item
 A few simple functions allow to get some metadata about the used ontology:
-<<R.hide, results=hide, echo=TRUE>>=
-getOntologyAccession(efo)
-getOntologyDescription(efo)
-@
-Arguments: appropriate \Robject{Ontology}.
+
+\textit{
+   \\$>$   getOntologyAccession(efo)
+   \\$>$   getOntologyDescription(efo)
+}
+\\\\Arguments: appropriate \Robject{Ontology}.
 \item
 To check if the term is present in the ontology function \Rfunction{hasTerm} can
 be used.
-<<R.hide, results=hide, echo=TRUE>>=
-hasTerm(efo,"CL000023")
-hasTerm(efo,"EFO_0000322")
-@
-Arguments: appropriate \Robject{Ontology} and the term accession.
+
+\textit{
+   \\$>$   hasTerm(efo,"CL000023")
+   \\$>$   hasTerm(efo,"EFO\_0000322")
+}
+\\\\Arguments: appropriate \Robject{Ontology} and the term accession.
 \item
 The following functions can be used to search terms in the ontology:
-<<R.hide, results=hide, echo=TRUE>>=
-searchTerm(efo,"thymus")
-searchTermPrefix(efo,"thym")
-@
-Arguments: appropriate \Robject{Ontology} and string\/string prefix to search for.
+\textit{
+   \\$>$   searchTerm(efo,"thymus")
+   \\$>$   searchTermPrefix(efo,"thym")
+}
+\\\\Arguments: appropriate \Robject{Ontology} and string\/string prefix to search for.
 \item
 The following functions can be used to investigate the ontology hierarchy:
-<<R.hide, results=hide, echo=TRUE>>=
-isRootById(efo,"EFO_0000322")
-isRoot(efo,term_efo)
-getRoots(efo)
-getRootIds(efo)
-@
-For some ontologies these functions might fail when the ontology used was not design
-to have root classes.
 
+\textit{
+   \\$>$   isRootById(efo,"EFO\_0000322")
+   \\$>$   isRoot(efo,term\_efo)
+   \\$>$   getRoots(efo)
+   \\$>$   getRootIds(efo)
+}
+
+For some ontologies these functions might fail when the ontology used was not design to have root classes.
 \end{itemize}
 
 \subsection{Relations}
-The \ontoCAT{} package uses HermiT reasoner (considered the reference reasoner implementation for OWL API) and it is possible to compute relationship across any axis in a given ontology, e.g. has\_part, derives\_from. Behind the scenes it uses the reasoner to query the ontology for children of inverse(ObjectProperty) some ClassInQuestion. While this is not exhaustive and effectively focuses on quantifier restrictions ignoring universal restrictions (allValuesFrom) over existential restrictions (someValuesFrom) it covers the majority of restrictions used in practice and computes the relationships in reasonable time.
+The \ontoCAT{} package uses the HermiT reasoner and it is possible to compute relationship across any axis in a given ontology, e.g. has\_part, derives\_from. Behind the scenes it uses the reasoner to query the ontology for subclasses of inverse (ObjectProperty) some ClassInQuestion. 
 
 \begin{itemize}
 \item
 To list all supported relations in ontology the following function can be used:
-<<R.hide, results=hide, echo=TRUE>>=
-getOntologyRelationNames(efo)
-@
+
+\textit{
+   \\$>$   getOntologyRelationNames(efo)
+}
 
 \item
 To list relations that has particular term the following function can be used:
-<<R.hide, results=hide, echo=TRUE>>=
-getTermRelationNamesById(efo,"EFO_0000322")
-getTermRelationNames(efo,term_efo)
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
+
+\textit{
+   \\$>$   getTermRelationNamesById(efo,"EFO\_0000322")
+   \\$>$   getTermRelationNames(efo,term\_efo)
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object.
 
 \item
 Please use the following functions to find out terms that are in some relation with the term of interest:
-<<R.hide, results=hide, echo=TRUE>>=
-getTermRelationsById(efo,"EFO_0000322","has_part")
-getTermRelations(efo,term_efo,"has_part")
-@
-Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object, relation name.
+
+\textit{
+   \\$>$   getTermRelationsById(efo,"EFO\_0000322","has\_part")
+   \\$>$   getTermRelations(efo,term\_efo,"has\_part")
+}
+\\\\Arguments: appropriate \Robject{Ontology} object, the term's accession or  \Robject{OntologyTerm} object, relation name.
 
 \end{itemize}
 
 \subsection{Functions specific for EFO ontology}
 There are few functions specific for EFO class hierarchy to work with EFO branch roots.
 
-<<R.hide, results=hide, echo=TRUE>>=
-getEFOBranchRootIds(efo)
-isEFOBranchRootById(efo,"EFO_0000322")
-isEFOBranchRoot(efo,term_efo)
-@
-
-
+\textit{
+   \\$>$   getEFOBranchRootIds(efo)
+   \\$>$   isEFOBranchRootById(efo,"EFO\_0000322")
+   \\$>$   isEFOBranchRoot(efo,term\_efo)
+}
 
 \subsection{Ontology term object}
 There are only three functions for the \Rclass{OntologyTerm} class.
@@ -226,12 +240,13 @@ There are only three functions for the \Rclass{OntologyTerm} class.
 \item \Rfunction{show} to view the term.
 \end{itemize}
 
-<<R.hide, results=hide, echo=TRUE>>=
-term <- getTermById(efo,"EFO_0000322")
-getLabel(term)
-getAccession(term)
-term
-@
+\textit{
+   \\$>$   term $\leftarrow$ getTermById(efo,"EFO\_0000322")
+   \\$>$   getLabel(term)
+   \\$>$   getAccession(term)
+   \\$>$   term
+}
+
 
 \section*{References}
 \begin{enumerate}
@@ -242,6 +257,8 @@ OntoCAT -- a simpler way to access ontology resources. \emph{Available from Natu
 \item Malone J, Holloway E, Adamusiak T, Kapushesky M, Zheng J, Kolesnikov N, Zhukova A, Brazma A, Parkinson H:
 Modeling Sample Variables with an Experimental Factor Ontology.
 \emph{Bioinformatics} 2010, \textbf{26}(8):1112--1118
+
+\item Boris Motik, Rob Shearer, and Ian Horrocks. Hypertableau Reasoning for Description Logics. Journal of Artificial Intelligence Research, 36:165Ð228, 2009.
 
 \item Experimental Factor Ontology \url{http://www.ebi.ac.uk/efo}
 
