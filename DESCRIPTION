@@ -9,5 +9,4 @@ Description: The ontoCAT R package provides a simple interface to ontologies des
 License: Apache License 2.0
 LazyLoad: yes
 biocViews: Classification, DataRepresentation
-SystemRequirements:	Java (>= 1.6)
 Depends: rJava, methods
