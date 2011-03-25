@@ -24,7 +24,7 @@ setMethod("show",          "OntologyTerm", function(object) cat(object@term$getA
 setMethod("getAccession",         "OntologyTerm", function(object) object@term$getAccession())
 setMethod("getLabel",       "OntologyTerm", function(object) object@term$getLabel())
 
-setClass(Class="Ontology",  representation=representation(op="jobjRef"))
+setClass(Class="Ontology",  representation=representation(ontology="jobjRef"))
 
 setGeneric(name="getAllTermChildrenById",              def=function(object, id)       {standardGeneric("getAllTermChildrenById")})
 setGeneric(name="getAllTermChildren",              def=function(object1, object2)       {standardGeneric("getAllTermChildren")})
@@ -69,124 +69,124 @@ setGeneric(name="getTermRelationsById",           def=function(object, id, relat
 
 
 setMethod(f="getAllTermChildrenById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getAllTermChildren(id))
+    x <- ((object@ontology)$getAllTermChildren(id))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getAllTermChildren", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getAllTermChildren(object2@term))
+    x <- ((object1@ontology)$getAllTermChildren(object2@term))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getAllTermIds", "Ontology", function(object) {
-    x <- (object@op)$getAllTermIds()
+    x <- (object@ontology)$getAllTermIds()
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getAllTermParentsById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getAllTermParents(id))
+    x <- ((object@ontology)$getAllTermParents(id))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getAllTermParents", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getAllTermParents(object2@term))
+    x <- ((object1@ontology)$getAllTermParents(object2@term))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getAllTerms", "Ontology", function(object) {
-    x <- (object@op)$getAllTerms()
+    x <- (object@ontology)$getAllTerms()
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermDefinitionsById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermDefinitions(id))
+    x <- ((object@ontology)$getTermDefinitions(id))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermDefinitions", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermDefinitions(object2@term))
+    x <- ((object1@ontology)$getTermDefinitions(object2@term))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getEFOBranchRootIds", "Ontology", definition=function(object) {
-    x <- ((object@op)$getEFOBranchRootIds())
+    x <- ((object@ontology)$getEFOBranchRootIds())
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
-setMethod(f="getOntologyAccession", "Ontology",   definition=function(object) (object@op)$getOntologyAccession())
-setMethod(f="getOntologyDescription", "Ontology",   definition=function(object) (object@op)$getOntologyDescription())
+setMethod(f="getOntologyAccession", "Ontology",   definition=function(object) (object@ontology)$getOntologyAccession())
+setMethod(f="getOntologyDescription", "Ontology",   definition=function(object) (object@ontology)$getOntologyDescription())
 setMethod(f="getRootIds", "Ontology", definition=function(object) {
-    x <- ((object@op)$getRootIds())
+    x <- ((object@ontology)$getRootIds())
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getRoots", "Ontology", definition=function(object) {
-    x <- ((object@op)$getRoots())
+    x <- ((object@ontology)$getRoots())
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermSynonymsById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermSynonyms(id))
+    x <- ((object@ontology)$getTermSynonyms(id))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermSynonyms", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermSynonyms(object2@term))
+    x <- ((object1@ontology)$getTermSynonyms(object2@term))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermAndAllChildrenById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermAndAllChildren(id))
+    x <- ((object@ontology)$getTermAndAllChildren(id))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermAndAllChildren", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermAndAllChildren(object2@term))
+    x <- ((object1@ontology)$getTermAndAllChildren(object2@term))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermById", signature=c(object="Ontology", id="character"),   definition=function(object, id) {
-    term <- (object@op)$getTermById(id)
+    term <- (object@ontology)$getTermById(id)
     new("OntologyTerm", term=term)
 })
 setMethod(f="getTermChildrenById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermChildren(id))
+    x <- ((object@ontology)$getTermChildren(id))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermChildren", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermChildren(object2@term))
+    x <- ((object1@ontology)$getTermChildren(object2@term))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
-setMethod(f="getTermNameById", signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@op)$getTermNameById(id))
+setMethod(f="getTermNameById", signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@ontology)$getTermNameById(id))
 setMethod(f="getTermParentsById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermParents(id))
+    x <- ((object@ontology)$getTermParents(id))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermParents", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermParents(object2@term))
+    x <- ((object1@ontology)$getTermParents(object2@term))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
-setMethod(f="hasTerm",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@op)$hasTerm(id))
-setMethod(f="isEFOBranchRootById",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@op)$isEFOBranchRoot(id))
-setMethod(f="isEFOBranchRoot",         signature=c(object1="Ontology", object2="OntologyTerm"),  definition=function(object1, object2) (object1@op)$isEFOBranchRoot(object2@term))
-setMethod(f="isRootById",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@op)$isRoot(id))
-setMethod(f="isRoot",         signature=c(object1="Ontology", object2="OntologyTerm"),   definition=function(object1, object2) (object1@op)$isRoot(object2@term))
+setMethod(f="hasTerm",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@ontology)$hasTerm(id))
+setMethod(f="isEFOBranchRootById",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@ontology)$isEFOBranchRoot(id))
+setMethod(f="isEFOBranchRoot",         signature=c(object1="Ontology", object2="OntologyTerm"),  definition=function(object1, object2) (object1@ontology)$isEFOBranchRoot(object2@term))
+setMethod(f="isRootById",         signature=c(object="Ontology", id="character"),   definition=function(object, id) (object@ontology)$isRoot(id))
+setMethod(f="isRoot",         signature=c(object1="Ontology", object2="OntologyTerm"),   definition=function(object1, object2) (object1@ontology)$isRoot(object2@term))
 setMethod(f="searchTerm", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- (object@op)$searchTerm(id)
+    x <- (object@ontology)$searchTerm(id)
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="searchTermPrefix", signature=c(object="Ontology", prefix="character"), definition=function(object, prefix) {
-    x <- (object@op)$searchTermPrefix(prefix)
+    x <- (object@ontology)$searchTermPrefix(prefix)
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
-setMethod(f="showHierarchyDownToTermById", signature=c(object="Ontology", id="character"), definition=function(object, id) (object@op)$showHierarchyDownToTerm(id))
-setMethod(f="showHierarchyDownToTerm", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) (object1@op)$showHierarchyDownToTerm(object2@term))
-setMethod(f="showPathsToTermById", signature=c(object="Ontology", id="character"), definition=function(object, id) (object@op)$showPathsToTerm(id))
-setMethod(f="showPathsToTerm", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) (object1@op)$showPathsToTerm(object2@term))
+setMethod(f="showHierarchyDownToTermById", signature=c(object="Ontology", id="character"), definition=function(object, id) (object@ontology)$showHierarchyDownToTerm(id))
+setMethod(f="showHierarchyDownToTerm", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) (object1@ontology)$showHierarchyDownToTerm(object2@term))
+setMethod(f="showPathsToTermById", signature=c(object="Ontology", id="character"), definition=function(object, id) (object@ontology)$showPathsToTerm(id))
+setMethod(f="showPathsToTerm", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) (object1@ontology)$showPathsToTerm(object2@term))
 
 #Relations
 setMethod(f="getOntologyRelationNames", "Ontology", definition=function(object) {
-    x <- ((object@op)$getOntologyRelationNames())
+    x <- ((object@ontology)$getOntologyRelationNames())
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermRelationNamesById", signature=c(object="Ontology", id="character"), definition=function(object, id) {
-    x <- ((object@op)$getTermRelationNames(id))
+    x <- ((object@ontology)$getTermRelationNames(id))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermRelationNames", signature=c(object1="Ontology", object2="OntologyTerm"), definition=function(object1, object2) {
-    x <- ((object1@op)$getTermRelationNames(object2@term))
+    x <- ((object1@ontology)$getTermRelationNames(object2@term))
     sapply(.jevalArray(x$toArray()),function(id) id$toString())
 })
 setMethod(f="getTermRelationsById", signature=c(object="Ontology", id="character", relation="character"), definition=function(object, id, relation) {
-    x <- ((object@op)$getTermRelations(id,relation))
+    x <- ((object@ontology)$getTermRelations(id,relation))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
 setMethod(f="getTermRelations", signature=c(object1="Ontology", object2="OntologyTerm", relation="character"), definition=function(object1, object2, relation) {
-    x <- ((object1@op)$getTermRelations(object2@term,relation))
+    x <- ((object1@ontology)$getTermRelations(object2@term,relation))
     sapply(.jevalArray(x$toArray()),function(term) new("OntologyTerm", term=term))
 })
