@@ -35,29 +35,34 @@
 \date{15 March, 2011}
 \maketitle
 
-Version 1.1.2. released 18 March, 2011.
+Version 1.1.3. released 18 March, 2011.
 
 
 \section{Introduction}
 
-We present \ontoCAT{} -- an R package providing a simple interface to ontologies described in two widely used formats:
-OBO (Open Biomedical Ontology format) and OWL (Web Ontology Language). Supporting these
-two formats the \ontoCAT{} package gives unified, format-independent access to ontology terms and the ontology hierarchy.
+The \ontoCAT{} package:
+\begin{itemize}
+\item gives unified, format-independent access to ontology terms and the ontology hierarchy represented in OWL and OBO formats;
+\item provides basic methods for ontology traversal, such as searching for terms, listing a specific term's relations, 
+showing paths to the term from the root element of the ontology, showing flattened-tree representations of the ontology hierarchy;
+\item supports working with groups of ontologies and with major public ontology repositories: searching for terms across ontologies, 
+listing available ontologies and loading ontologies for further analysis as necessary.
+\end{itemize}
 
-Our package's focus is on basic operations with ontologies, including searching for terms, getting a particular term's
-parents and/or children, showing paths to the term from the root element of the ontology, showing flattened-tree
-representations of the ontology hierarchy. Integration of this functionality into the \R environment allows to combine easily
-tasks concerning ontologies with other R scripts.
+In \ontoCAT{} the subsumption ``subclass/superclass'' is supported in a user friendly form of ``child -- parent'' relationship. 
+No distinction is made between universals (classes) and particulars (instances) as they are both treated as ontology terms. 
 
-Light ontoCAT package version is available in Bioconductor starting from the release 2.7.
+The package is based primarily on the Ontology Common API Tasks Java library, on the OWL API and depends on rJava R package. HermiT reasoner is used to support relationships.
+OBO ontologies are translated by OWL API into valid OWL format that can be reasoned over.  
 
-Full version includes batch methods, searches in OLS and Bioportal repositories, and it is heavier in terms of size: 7.9 MB. That is why it was not included into Bioconductor where package size is limited with 2 MB.  
+We provide two versions of \ontoCAT{}:
+\begin{itemize}
+\item Light-weight \ontoCAT{} package version is available in Bioconductor starting from
+  release 2.7, and includes all single-ontology functionality except for methods to work with multiple ontologies and search in OLS and BioPortal.
+\item Full version includes batch methods and due to package size limitations is available only from the project
+  website  \url{http://www.ontocat.org/wiki/r}. 
+\end{itemize}
 
-Full version of ontoCAT package as well as Java sources, Java docs, examples and documentation are available on the ontoCAT project website  \url{http://www.ontocat.org/wiki/r}
-
-The package is based on the Ontology Common API Tasks Java library
-(\url{http://www.ontocat.org}) as well as various other utilites methods and
-depends on \Rpackage{rJava} R package.
 
 \section{Basic operations with ontology}
 The \ontoCAT{} package can load an ontology from a local file or on-the-fly from a URI. An inferred ontology
@@ -180,8 +185,6 @@ to have root classes.
 \end{itemize}
 
 \subsection{Relations}
-The \ontoCAT{} package uses HermiT reasoner (considered the reference reasoner implementation for OWL API) and it is possible to compute relationship across any axis in a given ontology, e.g. has\_part, derives\_from. Behind the scenes it uses the reasoner to query the ontology for children of inverse(ObjectProperty) some ClassInQuestion. While this is not exhaustive and effectively focuses on quantifier restrictions ignoring universal restrictions (allValuesFrom) over existential restrictions (someValuesFrom) it covers the majority of restrictions used in practice and computes the relationships in reasonable time.
-
 \begin{itemize}
 \item
 To list all supported relations in ontology the following function can be used:
