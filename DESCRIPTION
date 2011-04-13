@@ -1,7 +1,7 @@
 Package: ontoCAT
 Type: Package
 Title: Ontology traversal and search
-Version: 1.2.0
+Version: 1.3.0
 Date: 2011-03-18
 Author: Natalja Kurbatova, Tomasz Adamusiak, Pavel Kurnosov, Morris Swertz, Misha Kapushevsky 
 Maintainer: Natalja Kurbatova <natalja@ebi.ac.uk>
