@@ -1,8 +1,8 @@
 \name{getOntology}
 \alias{getOntology}
-\title{Returns an instance of the ontology parser created from OWL or OBO file}
+\title{Returns an instance of the ontology parser created from OWL or OBO file. Reasoning over ontologies and extracting relationships is supported by using HermiT reasoner.}
 \description{
-    Loads the ontology described in OWL or OBO format from the local file or on the fly by using URL, creates the inferred ontology classes.
+    Loads the ontology described in OWL or OBO format from the local file or on the fly by using URL.
 }
 \usage{
     getOntology(pathToURI)
@@ -30,6 +30,7 @@
 
 \examples{
     ontologyFromURL <- getOntology("http://www.ebi.ac.uk/efo/efo.owl")
+    getOntologyRelationNames(ontologyFromURL)
     getTermParentsById(ontologyFromURL,"EFO_0001221")
     ontologyFromFile <- getOntology("./ontoCAT/extdata/cell.obo")
     getAllTermIds(ontologyFromFile)
