@@ -35,7 +35,7 @@
 \date{15 March, 2011}
 \maketitle
 
-Version 1.1.3. released 18 March, 2011.
+Version 1.2.1. released 6 June, 2011.
 
 
 \section{Introduction}
@@ -70,12 +70,14 @@ view is created internally, using \textbf{Pellet} to classify the ontology. Onto
 supported. 
 
 \subsection{Create Ontology object}
-To create an object of \Rclass{Ontology} you can use one of the two methods:
+To create an object of \Rclass{Ontology} you can use one of the three methods:
 \begin{itemize}
 \item \Rfunction{getEFO()} loads the latest EFO version on the fly from the
 EFO SVN repository and creates \Robject{Ontology} object.
 \item \Rfunction{getOntology("pathToOntology")} loads the ontology described in
-OWL or OBO format from a local file or a UR and creates \Robject{Ontology} object.
+OWL or OBO format from a local file or a UR and creates \Robject{Ontology} object. Reasoning over ontologies and extracting relationships is supported by using HermiT reasoner.
+\item  \Rfunction{getOntologyNoReasoning("pathToOntology")} loads the ontology described in
+OWL or OBO format from a local file or a UR and creates \Robject{Ontology} object without reasoning over loaded ontology.
 \end{itemize}
 <<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
 library(ontoCAT)
@@ -232,6 +234,70 @@ getLabel(term)
 getAccession(term)
 term
 @
+
+\section{Methods to Work Across Multiple Ontologies}
+
+The \ontoCAT{} package provides methods to work with groups or ``batches'' of ontologies, local or
+web-based. Users can search for the terms across such resources and load specified individual ontologies by accession
+number. An Internet connection is required to load remote ontologies.
+
+\subsection{Create Ontology Batch}
+To create an object of \Rclass{OntologyBatch} you can use one of the two methods:
+\begin{itemize}
+\item \Rfunction{getEFOBatch()} without any arguments loads the EFO ontology. Ontologies can be
+added to an existing batch as needed via the \Rfunction{addOntology()} method.
+\item \Rfunction{getOntologyBatch("pathToDir")} creates a local batch of ontologies,
+taking a single argument: the path to the local directory containing ontology files.
+\end{itemize}
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+library(ontoCAT)
+batch <- getEFOBatch()
+@
+
+\subsection{Term Searching}
+After a batch of ontologies is created, various methods for term searching become available.
+\begin{itemize}
+\item
+To search term in all ontlogies included into the batch:
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+searchTermInBatch(batch,"thymus")
+@
+\item
+Searches in two public ontology repositories are supported. The NCBO
+BioPortal is a web-based application for accessing and sharing biomedical ontologies, currently
+hosting \textbf{241} ontologies. The Ontology Lookup Service (OLS) is a web services SOAP API for querying multiple
+ontologies, hosting \textbf{81} ontologies. 
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+searchTermInBioportal(batch,"thymus")
+searchTermInOLS(batch,"thymus")
+@
+\item
+Search by using all available sources will search for the term in local batch and addionally in OLS and BioPortal
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+searchTermInAll(batch,"thymus")
+@
+\end{itemize}
+
+\subsection{Other Batch Methods}
+\begin{itemize}
+\item
+To add ontology into the batch:
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+addOntology(batch,"http://purl.org/biotop/biotop.owl")
+addEFO(batch)
+@
+\item
+To list all available ontologies in the local batch:
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+listLoadedOntologies(batch)
+@
+\item
+To get ontology parser in order to work with single ontology parsing and querying methods:
+<<R.hide, results=hide, echo=TRUE, eval=FALSE>>=
+ontology <- getOntologyFromBatch(batch,"EFO")
+@
+The second argument is the ontology accession.
+\end{itemize}
 
 \section*{References}
 \begin{enumerate}
