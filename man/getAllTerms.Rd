@@ -27,6 +27,7 @@
 \author{Natalja Kurbatova}
     \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-    efo <- getEFO()
-    getAllTerms(efo)
+    file <- system.file("extdata", "cell.obo", package="ontoCAT")
+    ontologyFromFile <- getOntology(file)
+    getAllTerms(ontologyFromFile)
 }

@@ -26,7 +26,3 @@
 }
 \author{Natalja Kurbatova}
     \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
-\examples{
-    efo <- getEFO()
-    getOntologyRelationNames(efo)
-}

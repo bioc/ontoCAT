@@ -52,5 +52,6 @@ LazyLoad: \tab yes\cr
 
 \examples{
     efo<-getEFO()
-    ontology <- getOntology("./ontoCAR/extdata/cell.obo")
+    file <- system.file("extdata", "cell.obo", package="ontoCAT")
+    ontology <- getOntology(file)
 }

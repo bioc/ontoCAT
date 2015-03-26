@@ -123,10 +123,9 @@ Another option is to load the latest EFO version on the fly by using \code{\link
     searchTermPrefix(ontology,"leuk")
     getTermAndAllChildrenById(ontology,"EFO_0000318")
     searchTerm(ontology,"thymus")
-    ontology <- getOntology("http://www.ebi.ac.uk/efo/efo.owl")
-    ontology <- getOntology("./ontoCAT/extdata/cell.obo")
-    getAllTermIds(ontology)
-    
+    file <- system.file("extdata", "cell.obo", package="ontoCAT")
+    ontology <- getOntology(file)
+    getAllTermIds(ontology)    
 }
 
 \keyword{classes}

@@ -30,8 +30,8 @@
 
 \examples{
     ontologyFromURL <- getOntology("http://www.ebi.ac.uk/efo/efo.owl")
-    getOntologyRelationNames(ontologyFromURL)
     getTermParentsById(ontologyFromURL,"EFO_0001221")
-    ontologyFromFile <- getOntology("./ontoCAT/extdata/cell.obo")
+    file <- system.file("extdata", "cell.obo", package="ontoCAT")
+    ontologyFromFile <- getOntology(file)
     getAllTermIds(ontologyFromFile)
 }

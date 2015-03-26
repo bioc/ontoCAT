@@ -25,10 +25,4 @@
     Java sources and javadocs: \url{http://sourceforge.net/projects/ontocat/files/}
 }
 \author{Natalja Kurbatova}
-
 \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
-
-\examples{
-    ontologyFromURL <- getOntologyNoReasoning("http://www.ebi.ac.uk/efo/efo.owl")
-    getOntologyRelationNames(ontologyFromURL)
-}

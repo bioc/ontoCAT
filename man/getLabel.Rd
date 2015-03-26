@@ -28,6 +28,6 @@
     \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
     efo <- getEFO()
-    term <- getTermById(efo,"EFO_0000827")
+    term <- getTermById(efo,"EFO_0004902")
     getLabel(term)
 }

@@ -24,11 +24,11 @@ getEFO()
 \author{Natalja Kurbatova}
 \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
-efo<-getEFO()
-getEFOBranchRootIds(efo)
-getTermParentsById(efo,"EFO_0001221")
-term_efo <- getTermById(efo,"EFO_0000322")
-isEFOBranchRoot(efo,term_efo)
-searchTermPrefix(efo,"leuk")
-getTermAndAllChildren(efo,term_efo)
+    efo<-getEFO()
+    getEFOBranchRootIds(efo)
+    getTermParentsById(efo,"EFO_0001221")
+    term_efo <- getTermById(efo,"EFO_0004902")
+    isEFOBranchRoot(efo,term_efo)
+    searchTermPrefix(efo,"leuk")    
+    getTermAndAllChildren(efo,term_efo)
 }

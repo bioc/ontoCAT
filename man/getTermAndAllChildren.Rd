@@ -29,6 +29,6 @@
     \seealso{\code{\linkS4class{Ontology}} and \code{\linkS4class{OntologyTerm}}}
 \examples{
     efo <- getEFO()
-    term <- getTermById(efo,"EFO_0000322")
+    term <- getTermById(efo,"EFO_0004902")
     getTermAndAllChildren(efo,term)
 }
