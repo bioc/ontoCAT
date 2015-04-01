@@ -1,11 +1,12 @@
 Package: ontoCAT
 Type: Package
 Title: Ontology traversal and search
-Version: 1.18.1
+Version: 1.18.2
 Date: 2015-03-25
 Author: Natalja Kurbatova, Tomasz Adamusiak, Pavel Kurnosov, Morris Swertz, Misha Kapushevsky 
 Maintainer: Natalja Kurbatova <natalja@ebi.ac.uk>
-Description: The ontoCAT R package provides a simple interface to ontologies described in widely used standard formats, stored locally in the filesystem or accessible online. License: Apache License 2.0
+Description: The ontoCAT R package provides a simple interface to ontologies described in widely used standard formats, stored locally in the filesystem or accessible online.
+License: Apache License 2.0
 LazyLoad: yes
 biocViews: Classification, DataRepresentation
 Depends: rJava, methods
